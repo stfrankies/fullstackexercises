@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const App = () => {
+
   const anecdotes = [
     'If it hurts, do it more often',
     'Adding manpower to a late software project makes it later!',
@@ -10,18 +11,34 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blod tests when dianosing patients'
   ]
-   
-  const [selected, setSelected] = useState(0)
-
-  const selectAnecdote = () =>{
-    let random = Math.floor(Math.random() * anecdotes.length)
-    setSelected(random)
+ 
+  
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  
+  const getRandomInt = (max) =>{
+    let randInt = Math.floor(Math.random()*max);
+    return randInt;
   }
 
-  return (
-    <div>
+  const getSelected = () =>{
+    let randomAnecdoteIndex = getRandomInt(anecdotes.length);
+    setSelected(randomAnecdoteIndex);
+  }
+
+  const votesArray = () =>{
+    let voteArray = [...votes]
+    voteArray[selected]+=1;
+    setVotes(voteArray)  
+  }
+
+
+    return(
+      <div>
       <p>{anecdotes[selected]}</p>
-      <button onClick={selectAnecdote}>next anecdote</button>
+      <p>has {votes[selected]} votes</p>
+        <button onClick={()=>votesArray()}>Vote</button>
+        <button onClick={() => getSelected()}>Next Anecdotes</button>
     </div>
   )
 }
