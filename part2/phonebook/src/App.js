@@ -16,7 +16,13 @@ const App = () => {
     const personObj = {
       name: newName
     }
-    setPersons(persons.concat(personObj));
+    const checkname = persons.filter(person => new RegExp(`^${newName}$`, "i").test(person.name));
+    if(checkname.length > 0){
+      window.alert(`${newName} is already added to the phonebook`);
+    }
+    else{
+      setPersons(persons.concat(personObj));
+    }
   }
 
   return (
@@ -31,7 +37,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => <p>{person.name}</p>)}
+      {persons.map((person, index) => <p key={index}>{person.name}</p>)}
     </div>
   )
 }
