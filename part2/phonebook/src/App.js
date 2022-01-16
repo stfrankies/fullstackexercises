@@ -1,18 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import AddPerson from './components/AddPerson'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [ persons, setPersons ] = useState([])
   const [ filter, setFilter] = useState('') 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons')
+    .then(response => {
+      setPersons(response.data)
+    })
+  }, [])
   
   const handleNameChange = (e) => setNewName(e.target.value);
   const handleFilterChange = (e) => setFilter(e.target.value);
@@ -25,7 +28,7 @@ const App = () => {
       number: newNumber
     }
 
-    const checkname = persons.filter(person => new RegExp(`^${newName}$`, "i").test(person.name));
+    const checkname = persons.filter(person => newName.toLowerCase().match(person.name.toLowerCase()));
     if(checkname.length > 0){
       window.alert(`${newName} has already been added to the phonebook`);
     }
