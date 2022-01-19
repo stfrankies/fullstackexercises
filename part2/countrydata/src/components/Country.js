@@ -1,4 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+const CountrySelect= ({ country }) => {
+
+  const [show, setShow] = useState(false)
+
+  const handleDisplay = () => {
+    setShow(!show)
+  }
+
+  return (
+    <div>
+      {country.name.common}
+      <button onClick={handleDisplay}>show</button>
+      {show && (<div>
+        <h1>{country.name.official}</h1>
+        <p>Capital: {country.capital}</p>
+        <p>Population: {country.population}</p>
+        <h2>Languages:</h2>
+        <ul>
+          {Object.values(country.languages).map((language, i) => <li key={i}>{language}</li>)}
+        </ul>
+        <img src={country.flags.png} alt={country.name.official} width="10%" />
+      </div>)}
+    </div>
+  )
+}
 
     
 const Country = ({countries, filter}) => {
@@ -21,7 +47,7 @@ return (
             </ul>
             <img src={country.flags.png} alt={country.name.official} width="10%" />
           </div>) :
-        countrySearch.map((country, i) => <p key={i}>{country.name.official}</p>) : <p></p>}
+        countrySearch.map((country, i) => <CountrySelect key={i} country={country} />) : <p></p>}
     </div>
     );
 }
