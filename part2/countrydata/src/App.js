@@ -17,11 +17,15 @@ const App = () => {
   
   const handleFilterChange = (e) => setFilter(e.target.value);
 
+  const queryCountry = countries.filter(country => new RegExp(filter, "i").test(country.name.official));
+
+  const queryWeather = queryCountry.length === 1 ? queryCountry[0].capital[0] : ''
+
   return (
     <div>
       <h2>Find Countries: </h2>
         <SearchForm filter={filter} filterChange = {handleFilterChange}/>
-        <Country countries = {countries} filter={filter}/>
+        <Country queryCountry = {queryCountry} filter={filter} queryWeather={queryWeather}/>
     </div>
   )
 }
