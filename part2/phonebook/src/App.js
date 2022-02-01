@@ -3,6 +3,8 @@ import axios from 'axios'
 import AddPerson from './components/AddPerson'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import personService from './components/service'
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -10,7 +12,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
 
-  const baseUrl = 'http://localhost:3001/persons'
+
 
   useEffect(() => {
     axios.get('http://localhost:3001/persons')
@@ -35,7 +37,7 @@ const App = () => {
       window.alert(`${newName} has already been added to the phonebook`);
     }
     else{
-      axios.post(baseUrl,personObj).then(res => setPersons(persons.concat(res.data)))
+      personService.create(personObj).then(res => setPersons(persons.concat(res.data)))
     }
   }
 
