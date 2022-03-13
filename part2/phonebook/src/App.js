@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import AddPerson from './components/AddPerson'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -10,8 +9,6 @@ const App = () => {
   const [ filter, setFilter] = useState('') 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-
-  const baseUrl = 'http://localhost:3001/persons'
 
   const handleDelete = (id, name) =>{
     let del = window.confirm(`are you sure you want to delete ${name}`)
@@ -43,10 +40,18 @@ const App = () => {
   
     const checkname = persons.filter(person => newName.toLowerCase().match(person.name.toLowerCase()));
     if(checkname.length > 0){
-      window.alert(`${newName} has already been added to the phonebook`);
+      const update = window.confirm(`${newName} has already been added to the phonebook, replace the old number with a new one`);
+      if (update){
+        console.log(checkname)
+        personService.update(checkname[0].id, personObj).then(response => {
+          const updatePerson = persons.map(person => (person.id === checkname[0].id) ? {...person, number: response.data.number} : person)
+          console.log(updatePerson);
+          setPersons(updatePerson);
+        })
+      }
       return
     }
-    axios.post(baseUrl,personObj).then(response => setPersons(persons.concat(response.data)))
+    personService.create(personObj).then(response => setPersons(persons.concat(response.data)))
   }
 
   const showPersons = filter ? persons.filter(person => new RegExp(filter, "i").test(person.name)) : persons;
