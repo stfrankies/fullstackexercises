@@ -14,7 +14,15 @@ const App = () => {
   const handleDelete = (id, name) =>{
     let del = window.confirm(`are you sure you want to delete ${name}`)
     if(del === true){
-        personService.remove(id).then(response => (response.statusText === "OK") ? setPersons(persons.filter(person => person.id !== id)) : "An error occured!")
+      personService.remove(id).then(setPersons(persons.filter(person => person.id !== id)))
+      .catch(error =>{
+
+        console.log(error)
+        setMessage(['error', `${name} has already been removed from the server`])
+        setTimeout(()=>{
+          setMessage([])
+        }, 5000)
+      })
     }
    }
 
