@@ -9,6 +9,7 @@ const App = () => {
   const [ filter, setFilter] = useState('') 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ message, setMessage ] = useState([])
 
   const handleDelete = (id, name) =>{
     let del = window.confirm(`are you sure you want to delete ${name}`)
@@ -47,12 +48,33 @@ const App = () => {
           const updatePerson = persons.map(person => (person.id === checkname[0].id) ? {...person, number: response.data.number} : person)
           console.log(updatePerson);
           setPersons(updatePerson);
+          setMessage(['success', `Updated ${response.data.name}` ])
+          setTimeout(()=>{
+            setMessage([])
+          }, 5000)
+        }).catch(error =>{
+          setMessage(['error', error])
+          setTimeout(()=>{
+            setMessage([])
+          }, 5000)
         })
       }
       return
     }
-    personService.create(personObj).then(response => setPersons(persons.concat(response.data)))
+    personService.create(personObj).then(response => {
+      setPersons(persons.concat(response.data))
+      setMessage(['success', `Added ${response.data.name}`])
+      setTimeout(()=>{
+        setMessage([])
+      }, 5000)
+    }).catch(error =>{
+      setMessage(['error', error])
+      setTimeout(()=>{
+        setMessage([])
+      }, 5000)
+    })
   }
+
 
   const showPersons = filter ? persons.filter(person => new RegExp(filter, "i").test(person.name)) : persons;
 
@@ -67,6 +89,7 @@ const App = () => {
         newNumber = {newNumber}
         handleNameChange = {handleNameChange}
         handleNumberChange = {handleNumberChange}
+        message = {message}
       />
       <h2>Numbers</h2>
       <Persons showPersons={showPersons} handleDelete={handleDelete}/>
