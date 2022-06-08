@@ -14,11 +14,16 @@ const App = () => {
   const handleDelete = (id, name) =>{
     let del = window.confirm(`are you sure you want to delete ${name}`)
     if(del === true){
-      personService.remove(id).then(setPersons(persons.filter(person => person.id !== id)))
+      personService.remove(id).then(()=> {setPersons(persons.filter(person => person._id !== id))
+      setMessage(['success', `${name} is now removed from the db`])
+      setTimeout(()=> {
+        setMessage([])
+      }, 5000)
+    })
       .catch(error =>{
 
         console.log(error)
-        setMessage(['error', `${name} has already been removed from the server`])
+        setMessage(['error', error.response.data.message])
         setTimeout(()=>{
           setMessage([])
         }, 5000)
@@ -51,17 +56,18 @@ const App = () => {
     if(checkname.length > 0){
       const update = window.confirm(`${newName} has already been added to the phonebook, replace the old number with a new one`);
       if (update){
-        console.log(checkname)
-        personService.update(checkname[0].id, personObj).then(response => {
-          const updatePerson = persons.map(person => (person.id === checkname[0].id) ? {...person, number: response.data.number} : person)
+        //console.log(checkname)
+        personService.update(checkname[0]._id, personObj).then(response => {
+          const updatePerson = persons.map(person => (person._id === checkname[0]._id) ? {...person, number: response.data.number} : person)
           console.log(updatePerson);
           setPersons(updatePerson);
-          setMessage(['success', `Updated ${response.data.name}` ])
+          setMessage(['success', `Updated ${response.data.name} successfully` ])
           setTimeout(()=>{
             setMessage([])
           }, 5000)
         }).catch(error =>{
-          setMessage(['error', error])
+          console.log(error.response)
+          setMessage(['error', error.response.data.message])
           setTimeout(()=>{
             setMessage([])
           }, 5000)
@@ -76,7 +82,8 @@ const App = () => {
         setMessage([])
       }, 5000)
     }).catch(error =>{
-      setMessage(['error', error])
+      console.log(error.response)
+      setMessage(['error', error.response.data.message])
       setTimeout(()=>{
         setMessage([])
       }, 5000)
