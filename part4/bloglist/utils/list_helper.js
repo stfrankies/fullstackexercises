@@ -12,7 +12,16 @@ const totalLikes = (blogs) =>{
     return null;
 }
 
+const favouriteBlog = (blogs) =>{
+    if(blogs.constructor === Array){
+        const sortbylikes = blogs.sort((obj1, obj2) => obj2.likes - obj1.likes)
+        return sortbylikes[0];
+    }
+    return null;
+}
+
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favouriteBlog
 }
