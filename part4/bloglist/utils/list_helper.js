@@ -20,8 +20,27 @@ const favouriteBlog = (blogs) =>{
     return null;
 }
 
+const mostBlog = (bloglist)=>{
+    const keys = ["author"]
+    if(bloglist.constructor === Array){
+      const mostBlog = keys.map((key)=> {
+          return Object.values(bloglist.reduce((acc, obj) =>{
+              let objKey = obj[key]
+              acc[objKey] = acc[objKey] || {blogs: 0, author: objKey};
+              acc[objKey].blogs += 1;
+              return acc
+          }, {}))
+      })
+
+      const sortmostBlog = mostBlog[0].sort((obj1, obj2)=> obj2.blogs - obj1.blogs);
+      return sortmostBlog[0];
+    }
+}
+
+
 module.exports = {
     dummy,
     totalLikes,
-    favouriteBlog
+    favouriteBlog,
+    mostBlog
 }
