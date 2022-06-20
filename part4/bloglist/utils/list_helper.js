@@ -37,10 +37,26 @@ const mostBlog = (bloglist)=>{
     }
 }
 
+const mostLikes = (bloglist) => {
+    const mostlike = []
+    if(bloglist.constructor === Array){
+        bloglist.forEach(({author, likes})=>{
+            const authorObj = mostlike.find((list)=> list.author === author)
+            if(authorObj){
+                authorObj.likes += likes
+            }else{
+                mostlike.push({author, likes})
+            }
+        })
+    }
+    return mostlike.sort((a,b)=> b.likes - a.likes)[0]
+}
+
 
 module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlog
+    mostBlog,
+    mostLikes
 }
