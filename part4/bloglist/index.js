@@ -16,15 +16,15 @@ app.get('/api/blogs', (request, response) => {
     })
 })
 
-// app.post('/api/blogs', (request, response) => {
-//   const blog = new Blog(request.body)
+app.post('/api/blogs', (request, response) => {
+  const blog = new Blog(request.body)
 
-//   blog
-//     .save()
-//     .then(result => {
-//       response.status(201).json(result)
-//     })
-// })
+  blog
+    .save()
+    .then(result => {
+      response.status(201).json(result)
+    })
+})
 
 const PORT = 3003
 app.listen(PORT, () => {
