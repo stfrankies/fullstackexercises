@@ -23,6 +23,11 @@ app.post('/api/blogs', (request, response) => {
     .save()
     .then(result => {
       response.status(201).json(result)
+    }).catch(e =>{
+      if(e.name === "ValidationError"){
+        response.status(400).json(e)
+      }
+      console.log(e)
     })
 })
 

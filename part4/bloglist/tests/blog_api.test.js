@@ -68,6 +68,23 @@ test('valid blog can be added', async () => {
   expect(likecount).toBeDefined();
 })
 
+test('note with valid title and url not added', async () =>{
+  const newBlog = {
+    
+    author: "Roberto C. Martino",
+    
+    likes: 3
+  }
+
+  await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

@@ -7,11 +7,18 @@ const mongoUrl = process.env.MONGODB_URI
 mongoose.connect(mongoUrl)
 
 const blogSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   author: String,
-  url: String,
+  url: {
+    type: String,
+    required: true
+  },
   likes: {
     type: Number,
+    required: true,
     default: 0
   }
 })
