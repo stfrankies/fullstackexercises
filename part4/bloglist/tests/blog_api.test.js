@@ -52,15 +52,20 @@ test('valid blog can be added', async () => {
           title: "Type warship",
           author: "Roberto C. Martino",
           url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWarship.html",
-          likes: 5,
+
         }
   await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
+  
+  
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length + 1) 
+  const likecount = response.body.map(r => r.likes)
+
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
+  expect(likecount).toBeDefined();
 })
 
 afterAll(() => {
