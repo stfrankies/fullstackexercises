@@ -40,6 +40,23 @@ app.delete('/api/blogs/:id', async(request, response) =>{
   }
 })
 
+app.put('/api/blogs/:id', (request, response) => {
+  const body = request.body
+
+  const blog = {
+          title: body.title,
+          author: body.author,
+          url: body.url,
+          likes: body.likes
+        }
+
+  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .then(updatedBlog => {
+      response.status(200).json(updatedBlog)
+    })
+    .catch(error => console.log(error))
+})
+
 const PORT = 3003
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

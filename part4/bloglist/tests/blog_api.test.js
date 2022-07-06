@@ -99,6 +99,27 @@ test('a specific blog can be deleted', async () =>{
   expect(blog_id).not.toContain(blogToDelete.id)
 })
 
+test('a specific blog can be updated', async () =>{
+  const blogIndb = await Blog.find({});
+
+  const blogToUpdate = blogIndb[0]
+  const updateBlog = {
+          title: "React patterns",
+          author: "Michael Chan",
+          url: "https://reactpatterns.com/",
+          likes: 10
+        }
+  await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updateBlog)
+      .expect(200)
+  
+  const blogAfter = await Blog.find({})
+  const blog_likes = blogAfter.map(r => r.likes)
+
+  expect(blog_likes).toContain(updateBlog.likes)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
