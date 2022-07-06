@@ -85,6 +85,20 @@ test('note with valid title and url not added', async () =>{
     expect(response.body).toHaveLength(initialBlogs.length)
 })
 
+test('a specific blog can be deleted', async () =>{
+  const blogIndb = await Blog.find({});
+
+  const blogToDelete = blogIndb[0]
+  await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+  
+  const blogAfter = await Blog.find({})
+  const blog_id = blogAfter.map(r => r.id)
+
+  expect(blog_id).not.toContain(blogToDelete.id)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
