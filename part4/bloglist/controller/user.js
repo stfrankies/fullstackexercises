@@ -10,15 +10,6 @@ usersRouter.post('/', async (request, response, next) => {
     return
   }
 
-  const users = await User.find({})
-
-  const isNotUnique = users.filter(founduser => new RegExp(username, "i").test(founduser.username))
-
-  if(isNotUnique.length !== 0){
-    response.status(400).json({ message: "This username has already been taken!"})
-    return
-  }
-
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
@@ -36,11 +27,11 @@ usersRouter.post('/', async (request, response, next) => {
 
 })
 
-usersRouter.get('/', (request, response) => {
-  User.find({})
-    .then(users => {
-      response.json(users)
-    })
+usersRouter.get('/', async (request, response) => {
+  const users = await User
+    .find({}).populate('blogs')
+
+  response.json(users)
 })
 
 module.exports = usersRouter
