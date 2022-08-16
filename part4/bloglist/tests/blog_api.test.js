@@ -68,7 +68,7 @@ test('valid blog can be added', async () => {
   expect(likecount).toBeDefined();
 })
 
-test('note with valid title and url not added', async () =>{
+test('blog with valid title and url not added', async () =>{
   const newBlog = {
     
     author: "Roberto C. Martino",
