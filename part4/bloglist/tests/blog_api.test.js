@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const Blog = require('../model/blogs')
-const app = require('../index')
+const app = require('../app')
 
 const api = supertest(app)
 
@@ -23,7 +23,7 @@ const initialBlogs = [
           __v: 0
         },  
       ]
-
+      
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new Blog(initialBlogs[0])

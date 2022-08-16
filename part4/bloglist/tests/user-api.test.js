@@ -7,22 +7,26 @@ const api = supertest(app);
 
 const initialUsers = [
   {
+    _id: "62d2f6ec99e8f00977a4b72e",
     name: "Arto Hellas",
     username: "hellas",
-    password: "pass123"
+    passwordHash: "$2b$10$AzejsZu2i5Ts6jy90EDDh.t7i8ZY1R9.l7oc3QpSKUU/Xz8520bhq",
+    blogs: "5a422a851b54a676234d17f7"
   },
   {
+    _id: "62d2f6ec99e8f00977a4b730",
     name: "Alan Turing",
     username: "alani",
-    password: "pass123"
+    passwordHash: "$2b$10$AzejsZu2i5Ts6jy90EDDh.t7i8ZY1R9.l7oc3QpSKUU/Xz8520bhq",
+    blogs: "5a422aa71b54a676234d17f8"
   }
 ]
 
 beforeEach(async () => {
   await User.deleteMany({})
-  let userObject = new Blog(initialUsers[0])
+  let userObject = new User(initialUsers[0])
   await userObject.save()
-  userObject = new Blog(initialUsers[1])
+  userObject = new User(initialUsers[1])
   await userObject.save()
 })
 
