@@ -12,10 +12,16 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
-  const body = request.body
-  try {
-    const user = request.user
 
+  if (!request.user) {
+    response.status(401).json({ error: "Unauthorized user" })
+    return
+  }
+
+  const body = request.body
+  const user = request.user
+
+  try {
     const blog = new Blog({
       title: body.title,
       author: body.author,
@@ -24,11 +30,10 @@ blogsRouter.post('/', async (request, response, next) => {
       user: user._id
     })
 
-    console.log(user)
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-    response.json(savedBlog)
+    response.status(201).json(savedBlog)
   } catch (e) {
     next(e)
   }
@@ -40,6 +45,8 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     const blog = await Blog.findById(request.params.id)
     if (blog.user._id.toString() === user._id.toString()) {
       await Blog.findByIdAndRemove(request.params.id)
+      user.blogs = user.blogs.filter(blog => blog.toString() !== request.params.id.toString())
+      await user.save()
       response.status(204).end()
     } else {
       response.status(401).json({ error: "Unauthorized user" })
