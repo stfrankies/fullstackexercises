@@ -1,71 +1,41 @@
-const blogsRouter = require('express').Router()
-const Blog = require('../model/blogs')
-const jwt = require('jsonwebtoken')
-const User = require('../model/users')
+const mongoose = require('mongoose')
+const dotenv = require('dotenv')
 
-
-blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
-
-  response.json(blogs)
-})
-
-blogsRouter.post('/', async (request, response, next) => {
-  const body = request.body
-  try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    const user = await User.findById(decodedToken.id)
-
-    const blog = new Blog({
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      likes: body.likes,
-      user: user._id
-    })
-
-    const savedBlog = await blog.save()
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
-    response.json(savedBlog)
-  } catch (e) {
-    next(e)
+const blogSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  author: String,
+  url: {
+    type: String,
+    required: true
+  },
+  likes: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
-blogsRouter.delete('/:id', async (request, response, next) => {
-  try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    const user = await User.findById(decodedToken.id)
-
-    const blog = await Blog.findById(request.params.id)
-    if (blog.user._id.toString() === user._id.toString()) {
-      await Blog.findByIdAndRemove(request.params.id)
-      response.status(204).end()
-    } else {
-      response.status(401).json({ error: "Unauthorized user" })
-    }
-  } catch (e) {
-    next(e)
+blogSchema.set('toJSON', {
+  transform: (document, objReturned) => {
+    objReturned.id = objReturned._id.toString();
+    delete objReturned._id
+    delete objReturned.__v
   }
 })
 
-blogsRouter.put('/:id', (request, response, next) => {
-  const body = request.body
+dotenv.config({ path: ".env" });
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  }
+const mongoUrl = process.env.MONGODB_URI;
 
-  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    .then(updatedBlog => {
-      response.status(200).json(updatedBlog)
-    }).catch(error => next(error))
-})
+mongoose.connect(mongoUrl)
 
+const Blog = mongoose.model('Blog', blogSchema)
 
-module.exports = blogsRouter;
+module.exports = Blog
