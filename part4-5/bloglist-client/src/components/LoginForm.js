@@ -2,7 +2,6 @@ import React from 'react';
 
 const LoginForm = ({ username, password, handleSubmit, handleUsernameChange, handlePasswordChange }) => {
 
-
   return (
     <div>
       <h2>Log in to application</h2>
