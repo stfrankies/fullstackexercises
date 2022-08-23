@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState([])
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -37,7 +39,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      setMessage(['error', error.response.data.error])
+      setTimeout(() => {
+        setMessage([])
+      }, 5000)
     }
   }
 
@@ -46,18 +52,26 @@ const App = () => {
     window.location.reload();
   }
 
-  const AddBlog = () => {
+  const AddBlog = (event) => {
+    event.preventDefault();
+
     const newBlog = {
       title: title,
       author: author,
       url: url
     }
-    try {
-      blogService.createBlog(newBlog)
-      console.log('Blog added!')
-    } catch (error) {
-      console.error(error)
-    }
+
+    blogService.createBlog(newBlog).then(data => {
+      setMessage(['success', `${data.title} has been added successfully`])
+      setTimeout(() => {
+        setMessage([])
+      }, 5000)
+    }).catch(error => {
+      setMessage(['error', error.response.data.error])
+      setTimeout(() => {
+        setMessage([])
+      }, 5000)
+    })
   }
 
   if (user === null) {
@@ -65,6 +79,7 @@ const App = () => {
 
       <div>
         <h2>Log in to application</h2>
+        <Notification message={message} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -96,6 +111,7 @@ const App = () => {
       <p>{user.name} logged in <button onClick={() => handleLogout()}>logout</button></p>
       <div>
         <h2>Create New</h2>
+        <Notification message={message} />
         <form onSubmit={AddBlog}>
           <div>
             title:
