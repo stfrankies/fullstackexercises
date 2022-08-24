@@ -77,7 +77,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <p>{user.name} logged in <button onClick={() => handleLogout()}>logout</button></p>
-      <Togglable buttonLabel='New blog'>
+      <Togglable buttonShow='New blog' buttonHide="Close x">
         <Notification message={message} />
         <BlogForm />
       </Togglable>
