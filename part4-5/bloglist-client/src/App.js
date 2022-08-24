@@ -32,6 +32,7 @@ const App = () => {
     }
   }, [])
 
+  const sortBlog = blogs.sort((a, b) => b.likes - a.likes)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -81,7 +82,7 @@ const App = () => {
         <Notification message={message} />
         <BlogForm />
       </Togglable>
-      {blogs.map(blog =>
+      {sortBlog.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
