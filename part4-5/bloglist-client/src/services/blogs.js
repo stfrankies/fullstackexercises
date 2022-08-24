@@ -26,9 +26,18 @@ const updateBlog = async (id, data) =>{
   return response.data
 }
 
+const deleteBlog = async(id) =>{
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  await axios.delete(`${baseUrl}/${id}`, config)
+}
+
 export default { 
   getAll, 
   setToken, 
   createBlog, 
-  updateBlog 
+  updateBlog,
+  deleteBlog
 }

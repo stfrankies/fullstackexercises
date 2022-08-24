@@ -57,7 +57,12 @@ const App = () => {
     window.location.reload();
   }
 
-
+  const handleDelete = (id, title) =>{
+    let action = window.confirm(`Do you really want to delete ${title}`)
+    if(action) blogService.deleteBlog(id)
+    const filterblog = blogs.filter(blog => blog.id !== id)
+    setBlogs(filterblog)
+  }
 
   if (user === null) {
     return (
@@ -83,7 +88,7 @@ const App = () => {
         <BlogForm />
       </Togglable>
       {sortBlog.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleDelete={handleDelete}/>
       )}
     </div>
   )

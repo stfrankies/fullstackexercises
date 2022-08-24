@@ -2,7 +2,7 @@ import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import { useState } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, handleDelete}) => {
 
   const [likes, setLikes] = useState(blog.likes)
   const blogStyle = {
@@ -26,12 +26,15 @@ const Blog = ({blog}) => {
     setLikes(likesplusone)
   }
 
+  
+
 return(
   <div style={blogStyle}>
     <Togglable buttonShow="view" buttonHide="hide" toggleTitle={blog.title +' '+blog.author}>
       <br/>{blog.url}
       <br/>Likes: {likes} <button onClick={IncrementLike}>like</button>
       <br/>{blog.author}
+      <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button>
     </Togglable>
   </div> )
 }
