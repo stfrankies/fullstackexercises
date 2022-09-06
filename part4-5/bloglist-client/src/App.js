@@ -59,9 +59,13 @@ const App = () => {
 
   const handleDelete = (id, title) =>{
     let action = window.confirm(`Do you really want to delete ${title}`)
-    if(action) blogService.deleteBlog(id)
-    const filterblog = blogs.filter(blog => blog.id !== id)
-    setBlogs(filterblog)
+    if(action) {
+      blogService.deleteBlog(id)
+      const filterblog = blogs.filter(blog => blog.id !== id)
+      setBlogs(filterblog)
+      return
+    } 
+    return
   }
 
   if (user === null) {

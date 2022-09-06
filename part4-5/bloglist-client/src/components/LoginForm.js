@@ -14,6 +14,9 @@ const LoginForm = ({ username, password, handleSubmit, handleUsernameChange, han
             value={username}
             name="Username"
             onChange={handleUsernameChange}
+            className="my-1"
+             id="usernameField"
+
           />
         </div>
         <div>
@@ -23,6 +26,8 @@ const LoginForm = ({ username, password, handleSubmit, handleUsernameChange, han
             value={password}
             name="Password"
             onChange={handlePasswordChange}
+            className="my-1"
+            id="passwordField"
           />
         </div>
         <button type="submit">login</button>
