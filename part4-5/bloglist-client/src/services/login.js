@@ -6,5 +6,8 @@ const login = (loginDetails) => {
     const request = axios.post(baseUrl, loginDetails)
     return request.then(response => response.data)
 }
+const loginService = {
+    login
+}
 
-export default {login}
+export default loginService
