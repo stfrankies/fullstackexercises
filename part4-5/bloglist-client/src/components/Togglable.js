@@ -27,8 +27,8 @@ const Togglable = (props) => {
 
 Togglable.displayName = "Togglable";
 Togglable.propTypes = {
-  buttonLabel: PropTypes.string.isRequired,
-  cancleButtonLabel: PropTypes.string.isRequired,
+  buttonShow: PropTypes.string.isRequired,
+  buttonHide: PropTypes.string.isRequired,
 };
 
 export default Togglable
