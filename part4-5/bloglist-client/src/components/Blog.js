@@ -29,8 +29,8 @@ const Blog = ({blog, handleDelete}) => {
   
 
 return(
-  <div style={blogStyle}>
-    <Togglable buttonShow="view" buttonHide="hide" toggleTitle={blog.title +' '+blog.author}>
+  <div style={blogStyle} className="blogWrapper">
+    <Togglable buttonShow="view" buttonHide="hide" toggleTitle={blog.title +' by '+blog.author}>
       <br/>{blog.url}
       <br/>Likes: {likes} <button onClick={IncrementLike}>like</button>
       <br/>{blog.author}
