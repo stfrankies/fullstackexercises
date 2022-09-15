@@ -10,7 +10,6 @@ import loginService from './services/login'
 const App = () => {
   const [blogs, setBlogs] = useState([])
 
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -57,6 +56,17 @@ const App = () => {
     window.location.reload();
   }
 
+    const handleLikeChange = async(id, blog) => {
+    const updateBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1
+    }
+
+    await blogService.updateBlog(id, updateBlog)
+  }
+
   const handleDelete = (id, title) =>{
     let action = window.confirm(`Do you really want to delete ${title}`)
     if(action) {
@@ -92,7 +102,7 @@ const App = () => {
         <BlogForm />
       </Togglable>
       {sortBlog.map(blog =>
-        <Blog key={blog.id} blog={blog} handleDelete={handleDelete}/>
+        <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLikeChange={() => handleLikeChange(blog.id, blog)}/>
       )}
     </div>
   )

@@ -4,7 +4,7 @@
 
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import Togglable from './Togglable'
@@ -16,7 +16,7 @@ const blog = {
     likes: 5
   }
 
-describe('<Togglable /> text and event', () => {
+describe('<Togglable />, text and event', () => {
   let container
 
   beforeEach(()=> {
@@ -46,4 +46,26 @@ describe('<Togglable /> text and event', () => {
     const div = container.querySelector('.togglableContent')
     expect(div).not.toHaveStyle('display: none')
   })
+})
+
+test('click like button event and response + 2', async () => {
+  const mockHandler = jest.fn()
+
+  const{ container } = render(
+    <Blog blog={blog} handleLikeChange={mockHandler} />
+  )
+
+  const user = userEvent.setup()
+  const viewButton = screen.getByText('view')
+  await user.click(viewButton)
+
+  const blogWrap = container.querySelector('.blogWrapper')
+  expect(blogWrap).toBeVisible()
+
+  const likeButton = screen.getByText('like')
+
+  expect(likeButton).toBeDefined()
+  await user.click(likeButton)
+  await user.click(likeButton)
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
