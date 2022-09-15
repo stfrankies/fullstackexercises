@@ -67,6 +67,21 @@ const App = () => {
     await blogService.updateBlog(id, updateBlog)
   }
 
+    const addBlog = (blogObject) =>{
+    blogService.createBlog(blogObject).then(data => {
+      setMessage(['success', `${data.title} has been added successfully`])
+      setTimeout(() => {
+        setMessage([])
+      }, 5000)
+    }).catch(error => {
+      setMessage(['error', error.response.data.error])
+      setTimeout(() => {
+        setMessage([])
+      }, 5000)
+    })
+  }
+  
+
   const handleDelete = (id, title) =>{
     let action = window.confirm(`Do you really want to delete ${title}`)
     if(action) {
@@ -99,13 +114,12 @@ const App = () => {
       <p>{user.name} logged in <button onClick={() => handleLogout()}>logout</button></p>
       <Togglable buttonShow='New blog' buttonHide="Close x">
         <Notification message={message} />
-        <BlogForm />
+        <BlogForm createBlog={addBlog}/>
       </Togglable>
       {sortBlog.map(blog =>
         <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLikeChange={() => handleLikeChange(blog.id, blog)}/>
       )}
-    </div>
-  )
+    </div>)
 }
 
 export default App

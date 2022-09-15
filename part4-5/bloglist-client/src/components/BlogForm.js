@@ -1,39 +1,27 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs'
-import Notification from './Notification';
 
-const BlogForm = () => {
+const BlogForm = ({ createBlog }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [message, setMessage] = useState([])
+
 
   const AddBlog = (event) => {
     event.preventDefault();
-
-    const newBlog = {
+    createBlog({
       title: title,
       author: author,
       url: url
-    }
-
-    blogService.createBlog(newBlog).then(data => {
-      setMessage(['success', `${data.title} has been added successfully`])
-      setTimeout(() => {
-        setMessage([])
-      }, 5000)
-    }).catch(error => {
-      setMessage(['error', error.response.data.error])
-      setTimeout(() => {
-        setMessage([])
-      }, 5000)
     })
+    
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
-
+    
   return (
     <div>
-      <Notification message={message} />
       <h2>Create New</h2>
       <form onSubmit={AddBlog}>
         <div>

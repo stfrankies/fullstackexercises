@@ -4,10 +4,11 @@
 
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { fireEvent, render, screen } from '@testing-library/react'
+import {render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import Togglable from './Togglable'
+import BlogForm from './BlogForm'
 
 const blog = {
     title: "The latest blog in town",
@@ -68,4 +69,24 @@ test('click like button event and response + 2', async () => {
   await user.click(likeButton)
   await user.click(likeButton)
   expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+test('<BlogForm /> calls event handler with right details', async () =>{
+  const createBlog = jest.fn()
+  const user = userEvent.setup()
+
+  render(<BlogForm createBlog={createBlog} />)
+
+  const inputs = screen.getAllByRole('textbox')
+  await user.type(inputs[0], 'Blog title...')
+  await user.type(inputs[1], 'Blog author...')
+  await user.type(inputs[2], 'blog.url...')
+
+  const sendButton = screen.getByText('Create')
+  await user.click(sendButton)
+
+  expect(createBlog.mock.calls).toHaveLength(1)
+  expect(createBlog.mock.calls[0][0].title).toBe('Blog title...')
+  expect(createBlog.mock.calls[0][0].author).toBe('Blog author...')
+  expect(createBlog.mock.calls[0][0].url).toBe('blog.url...')
 })
