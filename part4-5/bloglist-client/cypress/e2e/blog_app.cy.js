@@ -46,4 +46,28 @@ describe('Blog app', function() {
         .and('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+        cy.get('input:first').type('jackie_chan')
+        cy.get('input:last').type('chanchan')
+        cy.contains('login').click()
+    })
+
+    it('A blog can be created', function() {
+      const blog = {
+        "title": "React Patterns",
+        "author": "Michael Chan",
+        "url": "https://reactpatterns.com"
+      }
+
+      cy.contains('New blog').click()
+      cy.get('#title').type(blog.title)
+      cy.get('#author').type(blog.author)
+      cy.get('#url').type(blog.url)
+
+      cy.contains('Create').click()
+      cy.contains('Close x').click()
+    })
+  })
 })
