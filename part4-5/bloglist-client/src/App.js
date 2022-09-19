@@ -110,7 +110,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       <p>{user.name} logged in <button onClick={() => handleLogout()}>logout</button></p>
       <Togglable buttonShow='New blog' buttonHide="Close x">
         <Notification message={message} />
