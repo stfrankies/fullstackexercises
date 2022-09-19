@@ -64,7 +64,10 @@ const App = () => {
       likes: blog.likes + 1
     }
 
-    await blogService.updateBlog(id, updateBlog)
+    await blogService.updateBlog(id, updateBlog).then(data =>{
+        const updatedBlog = blogs.map(blog => (blog.id === id)  ?  { ...blog, likes: data.likes} : blog)
+        setBlogs(updatedBlog)
+    })
   }
 
     const addBlog = (blogObject) =>{
@@ -73,6 +76,7 @@ const App = () => {
       setTimeout(() => {
         setMessage([])
       }, 5000)
+      setBlogs(blogs.concat(data))
     }).catch(error => {
       setMessage(['error', error.response.data.error])
       setTimeout(() => {

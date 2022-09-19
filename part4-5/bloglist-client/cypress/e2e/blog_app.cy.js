@@ -1,21 +1,27 @@
 
 describe('Blog app', function() {
+  const blog = {
+    "title": "React Patterns",
+    "author": "Michael Chan",
+    "url": "https://reactpatterns.com"
+  }
+  const user1 = {
+    name: 'Matti Luukkainen',
+    username: 'mluukkai',
+    password: 'salainen'
+  }
+
+  const user2 = {
+    name:'Jackie Chan',
+    username:'jackie_chan',
+    password:'chanchan'
+  }
+
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user1 = {
-      name: 'Matti Luukkainen',
-      username: 'mluukkai',
-      password: 'salainen'
-    }
+    
     cy.request('POST', 'http://localhost:3003/api/users/', user1)
-
-    const user2 = {
-        name:'Jackie Chan',
-        username:'jackie_chan',
-        password:'chanchan'
-    }
-
-     cy.request('POST', 'http://localhost:3003/api/users/', user2)
+    cy.request('POST', 'http://localhost:3003/api/users/', user2)
     
     cy.visit('http://localhost:3000')
   })
@@ -55,19 +61,31 @@ describe('Blog app', function() {
     })
 
     it('A blog can be created', function() {
-      const blog = {
-        "title": "React Patterns",
-        "author": "Michael Chan",
-        "url": "https://reactpatterns.com"
-      }
-
       cy.contains('New blog').click()
       cy.get('#title').type(blog.title)
       cy.get('#author').type(blog.author)
       cy.get('#url').type(blog.url)
 
-      cy.contains('Create').click()
+      cy.get('#create').click()
       cy.contains('Close x').click()
+    })
+  })
+
+  describe('Blog events', function(){
+    beforeEach(function() {
+        cy.get('input:first').type('jackie_chan')
+        cy.get('input:last').type('chanchan')
+        cy.contains('login').click()
+        cy.contains('New blog').click()
+        cy.get('#title').type(blog.title)
+        cy.get('#author').type(blog.author)
+        cy.get('#url').type(blog.url)
+
+        cy.get('#create').click()
+    })
+    it('User can like blog', function(){
+      cy.contains('view').click()
+      cy.contains('like').click()
     })
   })
 })
