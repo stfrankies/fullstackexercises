@@ -89,12 +89,20 @@ const App = () => {
   const handleDelete = (id, title) =>{
     let action = window.confirm(`Do you really want to delete ${title}`)
     if(action) {
-      blogService.deleteBlog(id)
-      const filterblog = blogs.filter(blog => blog.id !== id)
-      setBlogs(filterblog)
-      return
+        blogService.deleteBlog(id).then(() => {
+          setMessage(['success', `${title} has been deleted successfully`])
+          setTimeout(() => {
+            setMessage([])
+          }, 5000)
+          const filterblog = blogs.filter(blog => blog.id !== id)
+          setBlogs(filterblog)
+        }).catch(error =>{
+          setMessage(['error', error.response.data.error])
+          setTimeout(() => {
+          setMessage([])
+          }, 5000)
+        })
     } 
-    return
   }
 
   if (user === null) {

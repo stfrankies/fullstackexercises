@@ -23,7 +23,7 @@ describe('Blog app', function() {
     cy.request('POST', 'http://localhost:3003/api/users/', user1)
     cy.request('POST', 'http://localhost:3003/api/users/', user2)
     
-    cy.visit('http://localhost:3000')
+    cy.visit('http://localhost:3001')
   })
 
   it('Login form is shown', function() {
@@ -73,19 +73,34 @@ describe('Blog app', function() {
 
   describe('Blog events', function(){
     beforeEach(function() {
-        cy.get('input:first').type('jackie_chan')
-        cy.get('input:last').type('chanchan')
-        cy.contains('login').click()
-        cy.contains('New blog').click()
-        cy.get('#title').type(blog.title)
-        cy.get('#author').type(blog.author)
-        cy.get('#url').type(blog.url)
+      cy.get('input:first').type('jackie_chan')
+      cy.get('input:last').type('chanchan')
+      cy.contains('login').click()
+      cy.contains('New blog').click()
+      cy.get('#title').type(blog.title)
+      cy.get('#author').type(blog.author)
+      cy.get('#url').type(blog.url)
 
-        cy.get('#create').click()
+      cy.get('#create').click()
     })
     it('User can like blog', function(){
       cy.contains('view').click()
       cy.contains('like').click()
+    })
+
+    it('Authorized user can delete blog', function(){
+      cy.contains('view').click()
+      cy.contains('Remove').click()
+      cy.contains('Success!')
+    })
+    it('Unauthorize user cannot delete blog', function(){
+      cy.contains('logout').click()
+      cy.get('input:first').type('mluukkai')
+      cy.get('input:last').type('salainen')
+      cy.contains('login').click()
+      cy.contains('view').click()
+      cy.contains('Remove').click()
+      cy.contains('Error!')
     })
   })
 })
