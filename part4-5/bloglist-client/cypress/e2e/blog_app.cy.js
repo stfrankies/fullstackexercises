@@ -5,6 +5,13 @@ describe('Blog app', function() {
     "author": "Michael Chan",
     "url": "https://reactpatterns.com"
   }
+
+  const blog1 = {
+    "title": "Software Testing",
+    "author": "Frank Matthews",
+    "url": "https://ourblogs.us"
+  }
+
   const user1 = {
     name: 'Matti Luukkainen',
     username: 'mluukkai',
@@ -82,14 +89,22 @@ describe('Blog app', function() {
       cy.get('#url').type(blog.url)
 
       cy.get('#create').click()
+
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('like').click()
+
+      cy.get('#title').type(blog1.title)
+      cy.get('#author').type(blog1.author)
+      cy.get('#url').type(blog1.url)
+
+      cy.get('#create').click()
     })
     it('User can like blog', function(){
-      cy.contains('view').click()
       cy.contains('like').click()
     })
 
     it('Authorized user can delete blog', function(){
-      cy.contains('view').click()
       cy.contains('Remove').click()
       cy.contains('Success!')
     })
@@ -101,6 +116,11 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.contains('Remove').click()
       cy.contains('Error!')
+    })
+
+    it('Blogs are ordered by likes', function(){     
+      cy.get('.blogList').eq(0).should('contain', 'Likes: 2')
+      cy.get('.blogList').eq(1).should('contain', 'Likes: 0')
     })
   })
 })

@@ -14,10 +14,12 @@ const Blog = ({blog, handleDelete, handleLikeChange}) => {
 return(
   <div style={blogStyle} className="blogWrapper">
     <Togglable buttonShow="view" buttonHide="hide" toggleTitle={blog.title +' by '+blog.author}>
-      <br/>{blog.url}
-      <br/>Likes: {blog.likes} <button onClick={handleLikeChange} className="likeButton" id='like'>like</button>
-      <br/>{blog.author}
-      <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button>
+      <div className='blogList'>
+        <br/>{blog.url}
+        <br/>Likes: {blog.likes} <button onClick={handleLikeChange} className="likeButton" id='like'>like</button>
+        <br/>{blog.author}
+        <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button>
+      </div>
     </Togglable>
   </div> )
 }
