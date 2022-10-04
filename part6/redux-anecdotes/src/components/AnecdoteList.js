@@ -1,14 +1,29 @@
-import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { onVote } from '../reducers/anecdoteReducer'
 import { onNotifed, onClear } from '../reducers/notificationReducer'
 
 
+const Anecdote = ({ anecdote, handleVote})=>{
+
+    return(
+    <div>
+        <div>
+            {anecdote.content}
+        </div>
+        <div>
+            has {anecdote.votes}
+            <button onClick={handleVote}>vote</button>
+        </div>
+    </div>
+    )
+}
+
 const AnecdoteList = () =>{
 
-const anecdotes = useSelector(state => state.anecdotes)
-
     const dispatch = useDispatch()
+    const anecdotes = useSelector(state => state.anecdotes)
+
+    const filter = useSelector(state => state.anecdotefilter.value)
 
     const voteAnecdote = (id, content) => {
         console.log('vote', id)
@@ -17,24 +32,17 @@ const anecdotes = useSelector(state => state.anecdotes)
         setTimeout(()=> dispatch(onClear()), 5000)
     }
 
-    const anecdoteForSort = [...anecdotes]
-    const sortAnecdotes = anecdoteForSort.sort((a, b) => b.votes - a.votes)
-
+    let anecdoteClone = [...anecdotes]
+    
+    const anecdoteFilter = filter ? anecdoteClone.filter( anecdote => anecdote.content.includes(filter)) : anecdotes
+    
     return (
-    <div>
-        <h2>Anecdotes List</h2>
-        {sortAnecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+        <div>
+            <h2>Anecdotes List</h2>
             <div>
-                {anecdote.content}
-            </div>
-            <div>
-                has {anecdote.votes}
-                <button onClick={() => voteAnecdote(anecdote.id, anecdote.content)}>vote</button>
+                {anecdoteFilter.map(anecdote => <Anecdote key={anecdote.id} anecdote={anecdote} handleVote={() => voteAnecdote(anecdote.id, anecdote.content)}/>)}            
             </div>
         </div>
-    )}
-    </div>
     )
 }
 
