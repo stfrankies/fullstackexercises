@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { onVote } from '../reducers/anecdoteReducer'
+import { updateVote } from '../reducers/anecdoteReducer'
 import { onNotifed, onClear } from '../reducers/notificationReducer'
 
 
@@ -25,11 +25,10 @@ const AnecdoteList = () =>{
 
     const filter = useSelector(state => state.anecdotefilter.value)
 
-    const voteAnecdote = (id, content) => {
-        console.log('vote', id)
-        dispatch(onNotifed(`You voted ${content}`))
-        dispatch(onVote(id))
-        setTimeout(()=> dispatch(onClear()), 5000)
+    const voteAnecdote = (anecdote) => {
+        dispatch(updateVote(anecdote))
+        dispatch(onNotifed(`You voted ${anecdote.content}`))
+        setTimeout(()=> {dispatch(onClear()); window.location.reload()}, 2000)
     }
 
     let anecdoteClone = [...anecdotes]
@@ -40,7 +39,7 @@ const AnecdoteList = () =>{
         <div>
             <h2>Anecdotes List</h2>
             <div>
-                {anecdoteFilter.map(anecdote => <Anecdote key={anecdote.id} anecdote={anecdote} handleVote={() => voteAnecdote(anecdote.id, anecdote.content)}/>)}            
+                {anecdoteFilter.map(anecdote => <Anecdote key={anecdote.id} anecdote={anecdote} handleVote={() => voteAnecdote(anecdote)}/>)}            
             </div>
         </div>
     )
