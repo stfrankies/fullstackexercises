@@ -9,14 +9,24 @@ const notficationSlice = createSlice({
   reducers: {
     onNotifed(state, action){
        const message = action.payload
-       state.message += message
-       console.log(message)
+       state.message = message
     },
-    onClear(){
-      return initialState
-    }
   }
 })
 
-export const { onNotifed, onClear } = notficationSlice.actions
+export const { onNotifed } = notficationSlice.actions
+
+var controlVar = null;
+
+export const setNotifiction = (message, time) =>{
+  return async (dispatch) =>{
+    dispatch(onNotifed(message));
+
+    if(controlVar ){
+      clearTimeout(controlVar) 
+    }
+    controlVar = setTimeout(()=> dispatch(onNotifed()), time * 1000)
+  }
+}
+
 export default notficationSlice.reducer

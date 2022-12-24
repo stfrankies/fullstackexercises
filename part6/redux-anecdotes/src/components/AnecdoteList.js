@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateVote } from '../reducers/anecdoteReducer'
-import { onNotifed, onClear } from '../reducers/notificationReducer'
+import { updateVote, initializeAnecdotes } from '../reducers/anecdoteReducer'
+import { setNotifiction } from '../reducers/notificationReducer'
 
 
 const Anecdote = ({ anecdote, handleVote})=>{
@@ -23,12 +24,14 @@ const AnecdoteList = () =>{
     const dispatch = useDispatch()
     const anecdotes = useSelector(state => state.anecdotes)
 
+    useEffect(() =>{
+        dispatch(initializeAnecdotes());
+    }, [dispatch])
     const filter = useSelector(state => state.anecdotefilter.value)
 
     const voteAnecdote = (anecdote) => {
         dispatch(updateVote(anecdote))
-        dispatch(onNotifed(`You voted ${anecdote.content}`))
-        setTimeout(()=> {dispatch(onClear()); window.location.reload()}, 2000)
+        dispatch(setNotifiction(`You voted ${anecdote.content}`, 5))
     }
 
     let anecdoteClone = [...anecdotes]

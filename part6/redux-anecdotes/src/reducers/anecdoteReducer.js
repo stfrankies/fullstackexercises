@@ -9,7 +9,6 @@ const anecdoteSlice = createSlice({
     onVote(state, action){
      const votedAnecdote = action.payload;
      const { anecdoteId } = votedAnecdote;
-
      return state.map((anecdote) => anecdote.id !== anecdoteId ? anecdote : votedAnecdote).sort((a,b) => b.votes - a.votes)
     },
     
