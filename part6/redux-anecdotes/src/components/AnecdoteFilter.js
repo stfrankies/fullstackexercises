@@ -19,3 +19,5 @@ return (
 }
  
 export default connect(null, {onFiltered})(AnecdoteFilter);
+
+

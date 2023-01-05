@@ -36,13 +36,14 @@ const AnecdoteList = () =>{
 
     let anecdoteClone = [...anecdotes]
     
-    const anecdoteFilter = filter ? anecdoteClone.filter( anecdote => anecdote.content.includes(filter)) : anecdotes
+    const anecdoteFilter = filter ? anecdoteClone.filter( anecdote => anecdote.content.includes(filter)) : anecdoteClone
+    const sortAnecdote = anecdoteFilter.sort((a,b) => b.votes - a.votes)
     
     return (
         <div>
             <h2>Anecdotes List</h2>
             <div>
-                {anecdoteFilter.map(anecdote => <Anecdote key={anecdote.id} anecdote={anecdote} handleVote={() => voteAnecdote(anecdote)}/>)}            
+                {sortAnecdote.map(anecdote => <Anecdote key={anecdote.id} anecdote={anecdote} handleVote={() => voteAnecdote(anecdote)}/>)}            
             </div>
         </div>
     )
