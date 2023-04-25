@@ -118,7 +118,7 @@ const App = () => {
 
     if (user === null) {
         return (
-            <div>
+            <div className="max-h-screen grid grid-rows-10 gap-4 pt-[33%]">
                 <Notification message={message} />
                 <LoginForm
                     username={username}
@@ -136,25 +136,36 @@ const App = () => {
     }
 
     return (
-        <div>
-            <h2>Blogs</h2>
-            <p>
-                {user.name} logged in{' '}
-                <button onClick={() => handleLogout()}>logout</button>
-            </p>
-            <Togglable buttonShow="New blog" buttonHide="Close x">
-                <Notification message={message} />
-                <BlogForm createBlog={addBlog} />
-            </Togglable>
-            {sortBlog.map((blog) => (
-                <Blog
-                    key={blog.id}
-                    blog={blog}
-                    handleDelete={handleDelete}
-                    handleLikeChange={() => handleLikeChange(blog.id, blog)}
-                />
-            ))}
-        </div>
+        <main className="min-h-screen grid items-center justify-center">
+            <div className="max-w-[400px] grid gap-4 border-2 border-black px-8 py-4 shadow-2xl rounded-lg">
+                <h2 className="text-4xl font-extrabold">Blogs</h2>
+                <div className="w-full grid grid-cols-3">
+                    <p className="col-span-2 grid items-center justify-start text-2xl">
+                        {user.name} logged in
+                    </p>
+                    <div className="">
+                        <button
+                            onClick={() => handleLogout()}
+                            className="border-2 border-blue-950 text-blue-700 text-lg px-8 hover:bg-blue-700 hover:text-white hover:font-bold py-2 rounded-lg"
+                        >
+                            logout
+                        </button>
+                    </div>
+                </div>
+                <Togglable buttonShow="New blog" buttonHide="Close x">
+                    <Notification message={message} />
+                    <BlogForm createBlog={addBlog} />
+                </Togglable>
+                {sortBlog.map((blog) => (
+                    <Blog
+                        key={blog.id}
+                        blog={blog}
+                        handleDelete={handleDelete}
+                        handleLikeChange={() => handleLikeChange(blog.id, blog)}
+                    />
+                ))}
+            </div>
+        </main>
     )
 }
 

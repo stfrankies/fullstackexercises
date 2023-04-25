@@ -1,5 +1,3 @@
-import React from 'react'
-
 const LoginForm = ({
     username,
     password,
@@ -8,35 +6,50 @@ const LoginForm = ({
     handlePasswordChange,
 }) => {
     return (
-        <div>
-            <h2>Log in to application</h2>
+        <main className="row-span-4 grid items-center justify-center">
+            <div className="h-fit w-fit px-8 py-16 border-2 shadow-lg grid gap-4 rounded-lg">
+                <h2 className="text-3xl text-center font-extrabold">
+                    Log in to application
+                </h2>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    username
-                    <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        onChange={handleUsernameChange}
-                        className="my-1"
-                        id="usernameField"
-                    />
-                </div>
-                <div>
-                    password
-                    <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        onChange={handlePasswordChange}
-                        className="my-1"
-                        id="passwordField"
-                    />
-                </div>
-                <button type="submit">login</button>
-            </form>
-        </div>
+                <form onSubmit={handleSubmit} className="grid gap-4">
+                    <div className="grid grid-cols-3 gap-4 px-3 py-4">
+                        <label className="grid place-items-center text-xl font-bold">
+                            username
+                        </label>
+                        <input
+                            type="text"
+                            value={username}
+                            name="Username"
+                            onChange={handleUsernameChange}
+                            className="col-span-2 my-1 p-3"
+                            id="usernameField"
+                        />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 px-3 py-4">
+                        <label className="grid place-items-center text-xl font-bold">
+                            password
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            name="Password"
+                            onChange={handlePasswordChange}
+                            className="col-span-2 my-1 p-3"
+                            id="passwordField"
+                        />
+                    </div>
+                    <div className="pt-4 grid items-center justify-center">
+                        <button
+                            type="submit"
+                            className="border-2 border-blue-950 text-blue-700 text-lg px-8 hover:bg-blue-700 hover:text-white hover:font-bold py-2 rounded-lg"
+                        >
+                            login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
     )
 }
 

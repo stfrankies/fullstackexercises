@@ -14,14 +14,28 @@ const Togglable = (props) => {
     return (
         <div className="togglableBlock">
             <div style={hideWhenVisible} className="toggleTitle">
-                {props.toggleTitle}{' '}
-                <button onClick={toggleVisibility} id={props.buttonShow}>
+                <div className="py-4 text-xl font-bold">
+                    {' '}
+                    {props.toggleTitle}
+                </div>
+                <button
+                    onClick={toggleVisibility}
+                    id={props.buttonShow}
+                    className="border-2 border-blue-950 text-blue-700 text-lg px-8 hover:bg-blue-700 hover:text-white py-2 rounded-lg"
+                >
                     {props.buttonShow}
                 </button>
             </div>
             <div style={showWhenVisible} className="togglableContent">
-                {props.toggleTitle}{' '}
-                <button onClick={toggleVisibility} id={props.buttonHide}>
+                <div className="py-4 text-xl font-bold">
+                    {' '}
+                    {props.toggleTitle}
+                </div>
+                <button
+                    onClick={toggleVisibility}
+                    id={props.buttonHide}
+                    className="border-2 border-blue-950 text-blue-700 text-lg px-8 hover:bg-blue-700 hover:text-white py-2 rounded-lg"
+                >
                     {props.buttonHide}
                 </button>
                 {props.children}
