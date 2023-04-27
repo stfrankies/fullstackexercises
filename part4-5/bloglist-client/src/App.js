@@ -69,12 +69,16 @@ const App = () => {
             likes: blog.likes + 1,
         }
 
-        await blogService.updateBlog(id, updateBlog).then((data) => {
-            const updatedBlog = blogPosts.map((blog) =>
-                blog.id === id ? { ...blog, likes: data.likes } : blog
-            )
-            dispatch(setBlogPosts(updatedBlog))
-        })
+        try {
+            await blogService.updateBlog(id, updateBlog).then((data) => {
+                const updatedBlog = blogPosts.map((blog) =>
+                    blog.id === id ? { ...blog, likes: data.likes } : blog
+                )
+                dispatch(setBlogPosts(updatedBlog))
+            })
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const addBlog = (blogObject) => {
@@ -103,10 +107,8 @@ const App = () => {
     const handleDelete = (id, title) => {
         let action = window.confirm(`Do you really want to delete ${title}`)
         if (action) {
-            console.log(id)
-            blogService
-                .deleteBlog(id)
-                .then(() => {
+            try {
+                blogService.deleteBlog(id).then(() => {
                     dispatch(
                         setNotification([
                             'success',
@@ -121,14 +123,12 @@ const App = () => {
                     )
                     dispatch(setBlogPosts(filterblog))
                 })
-                .catch((error) => {
-                    dispatch(
-                        setNotification(['error', error.response.data.error])
-                    )
-                    setTimeout(() => {
-                        dispatch(setNotification([]))
-                    }, 5000)
-                })
+            } catch (err) {
+                dispatch(setNotification(['error', err.response.data.error]))
+                setTimeout(() => {
+                    dispatch(setNotification([]))
+                }, 5000)
+            }
         }
     }
 
