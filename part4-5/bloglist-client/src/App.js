@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -6,19 +7,25 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { setBlogPosts, setNotification } from './redux/actions/blogActions'
 
 const App = () => {
-    const [blogs, setBlogs] = useState([])
+    const notification = useSelector(
+        (state) => state.blogNotification.notification
+    )
+    const blogPosts = useSelector((state) => state.allblogPosts.blogs)
+    const dispatch = useDispatch()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
     const [user, setUser] = useState(null)
-    const [message, setMessage] = useState([])
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => setBlogs(blogs))
-    }, [])
+        blogService
+            .getAll()
+            .then((blogPosts) => dispatch(setBlogPosts(blogPosts)))
+    }, [dispatch])
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -29,7 +36,7 @@ const App = () => {
         }
     }, [])
 
-    const sortBlog = blogs.sort((a, b) => b.likes - a.likes)
+    const sortBlog = blogPosts.sort((a, b) => b.likes - a.likes)
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -42,9 +49,9 @@ const App = () => {
             setPassword('')
         } catch (error) {
             console.log(error)
-            setMessage(['error', error.response.data.error])
+            dispatch(setNotification(['error', error.response.data.error]))
             setTimeout(() => {
-                setMessage([])
+                dispatch(setNotification([]))
             }, 5000)
         }
     }
@@ -63,10 +70,10 @@ const App = () => {
         }
 
         await blogService.updateBlog(id, updateBlog).then((data) => {
-            const updatedBlog = blogs.map((blog) =>
+            const updatedBlog = blogPosts.map((blog) =>
                 blog.id === id ? { ...blog, likes: data.likes } : blog
             )
-            setBlogs(updatedBlog)
+            dispatch(setBlogPosts(updatedBlog))
         })
     }
 
@@ -74,19 +81,21 @@ const App = () => {
         blogService
             .createBlog(blogObject)
             .then((data) => {
-                setMessage([
-                    'success',
-                    `${data.title} has been added successfully`,
-                ])
+                dispatch(
+                    setNotification([
+                        'success',
+                        `${data.title} has been added successfully`,
+                    ])
+                )
                 setTimeout(() => {
-                    setMessage([])
+                    dispatch(setNotification([]))
                 }, 5000)
-                setBlogs(blogs.concat(data))
+                dispatch(setBlogPosts(blogPosts.concat(data)))
             })
             .catch((error) => {
-                setMessage(['error', error.response.data.error])
+                dispatch(setNotification(['error', error.response.data.error]))
                 setTimeout(() => {
-                    setMessage([])
+                    dispatch(setNotification([]))
                 }, 5000)
             })
     }
@@ -94,23 +103,30 @@ const App = () => {
     const handleDelete = (id, title) => {
         let action = window.confirm(`Do you really want to delete ${title}`)
         if (action) {
+            console.log(id)
             blogService
                 .deleteBlog(id)
                 .then(() => {
-                    setMessage([
-                        'success',
-                        `${title} has been deleted successfully`,
-                    ])
+                    dispatch(
+                        setNotification([
+                            'success',
+                            `${title} has been deleted successfully`,
+                        ])
+                    )
                     setTimeout(() => {
-                        setMessage([])
+                        dispatch(setNotification([]))
                     }, 5000)
-                    const filterblog = blogs.filter((blog) => blog.id !== id)
-                    setBlogs(filterblog)
+                    const filterblog = blogPosts.filter(
+                        (blog) => blog.id !== id
+                    )
+                    dispatch(setBlogPosts(filterblog))
                 })
                 .catch((error) => {
-                    setMessage(['error', error.response.data.error])
+                    dispatch(
+                        setNotification(['error', error.response.data.error])
+                    )
                     setTimeout(() => {
-                        setMessage([])
+                        dispatch(setNotification([]))
                     }, 5000)
                 })
         }
@@ -118,8 +134,8 @@ const App = () => {
 
     if (user === null) {
         return (
-            <div className="max-h-screen grid grid-rows-10 gap-4 pt-[33%]">
-                <Notification message={message} />
+            <div className="max-h-screen grid grid-rows-10 gap-4 pt-[50px]">
+                <Notification message={notification} />
                 <LoginForm
                     username={username}
                     password={password}
@@ -140,8 +156,8 @@ const App = () => {
             <div className="max-w-[400px] grid gap-4 border-2 border-black px-8 py-4 shadow-2xl rounded-lg">
                 <h2 className="text-4xl font-extrabold">Blogs</h2>
                 <div className="w-full grid grid-cols-3">
-                    <p className="col-span-2 grid items-center justify-start text-2xl">
-                        {user.name} logged in
+                    <p className="col-span-2 grid items-center justify-start text-xl text-blue-700 font-bold">
+                        {user.username} logged in
                     </p>
                     <div className="">
                         <button
@@ -153,7 +169,7 @@ const App = () => {
                     </div>
                 </div>
                 <Togglable buttonShow="New blog" buttonHide="Close x">
-                    <Notification message={message} />
+                    <Notification message={notification} />
                     <BlogForm createBlog={addBlog} />
                 </Togglable>
                 {sortBlog.map((blog) => (

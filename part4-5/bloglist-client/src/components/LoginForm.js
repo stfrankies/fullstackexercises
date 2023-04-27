@@ -18,11 +18,12 @@ const LoginForm = ({
                             username
                         </label>
                         <input
+                            autoComplete="off"
                             type="text"
                             value={username}
                             name="Username"
                             onChange={handleUsernameChange}
-                            className="col-span-2 my-1 p-3"
+                            className="col-span-2 my-1 p-3 border-2 border-black rounded-md"
                             id="usernameField"
                         />
                     </div>
@@ -31,11 +32,12 @@ const LoginForm = ({
                             password
                         </label>
                         <input
+                            autoComplete="off"
                             type="password"
                             value={password}
                             name="Password"
                             onChange={handlePasswordChange}
-                            className="col-span-2 my-1 p-3"
+                            className="col-span-2 my-1 p-3 border-2 border-black rounded-md"
                             id="passwordField"
                         />
                     </div>
