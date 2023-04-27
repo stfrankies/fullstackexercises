@@ -29,10 +29,10 @@ const blogPostsReducer = (state = initialState, { type, payload }) => {
 const signedInUserReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ActionTypes.SET_SIGNED_IN_USER:
-            return {}
+            return { ...state, user: payload }
 
         default:
-            break
+            return state
     }
 }
 
