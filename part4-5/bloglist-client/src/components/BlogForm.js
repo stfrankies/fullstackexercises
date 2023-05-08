@@ -5,8 +5,8 @@ const BlogForm = ({ createBlog }) => {
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
-    const AddBlog = (event) => {
-        event.preventDefault()
+    const AddBlog = (e) => {
+        e.preventDefault()
         createBlog({
             title: title,
             author: author,
@@ -20,7 +20,9 @@ const BlogForm = ({ createBlog }) => {
 
     return (
         <div>
-            <h2 className="text-xl text-blue-950 pt-8 pb-4">Create New</h2>
+            <h2 className="text-xl text-blue-700 font-bold pt-8 pb-4">
+                Create New
+            </h2>
             <form onSubmit={AddBlog} className="grid gap-4">
                 <div className="grid gap-2 grid-cols-5">
                     <label className="col-span-1 grid items-center justify-start text-xl">
