@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "prettier": "npx prettier --write '**/*.{js,jsx,css,json,md}'",
-        "dev": "nodemon index.js"
+        "dev": "nodemon library-backend.js"
     },
     "author": "",
     "license": "ISC",
