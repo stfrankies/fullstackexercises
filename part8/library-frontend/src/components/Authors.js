@@ -1,15 +1,6 @@
 import { useState } from 'react'
-import {gql, useMutation} from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS } from '../App'
-
-const EDIT_AUTHOR = gql`
-  mutation editAuthor($name: String!, $born: Int!){
-    editAuthor(name: $name, setBornTo: $born){
-      name
-      born
-    }
-  }
-`
+import { useMutation} from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, EDIT_AUTHOR } from '../gqlactions'
 
 
 const Authors = ({show, allAuthors}) => {
@@ -62,10 +53,10 @@ const Authors = ({show, allAuthors}) => {
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
         <div>
-          name <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          name <select value={name} onChange={({ target }) => setName(target.value)}>
+            <option>Select author</option>
+            {authors.map((n)=> <option key={n.name}>{n.name}</option>)}
+          </select>
         </div>
         <div>
           born <input

@@ -2,25 +2,9 @@ import { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS } from './gqlactions'
 
-export const ALL_AUTHORS = gql
-    `query {
-        allAuthors{
-            name,
-            born,
-            bookCount
-        }
-    }`
-  
-  export const ALL_BOOKS = gql
-    `query{
-      allBooks {
-        author,
-        title,
-        published
-      }
-    }`
 
 const App = () => {
  
@@ -29,7 +13,7 @@ const App = () => {
   const query_authors = useQuery(ALL_AUTHORS)
   const query_books = useQuery(ALL_BOOKS)
 
-  if(query_authors.loading){
+  if(query_authors.loading || query_books.loading){
     return <div>spinner...</div>
   }
 
