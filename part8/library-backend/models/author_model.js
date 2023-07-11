@@ -5,7 +5,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const schema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Author name cannot be empty"],
     unique: true,
     minlength: 4
   },

@@ -25,13 +25,24 @@ mongoose.connect(MONGODB_URI)
 
 
 const typeDefs = `
-  type Book {
+type User {
+  username: String!
+  favoriteGenre: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
+}
+
+type Book {
     title: String!
     published: Int!
     author: Author!
     genres: [String!]!
     id: ID!
 	}
+
   type Author {
 		name: String!
 		id: String!
@@ -41,8 +52,9 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author:String, genre: String): [Book!]!
+    allBooks(author: String, genres: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
 
   type Mutation {
@@ -56,6 +68,13 @@ const typeDefs = `
 		name: String!
 		setBornTo: Int!
 	): Author
+  createUser(
+    username: String!
+  ): User
+  login(
+    username: String!
+    password: String!
+  ): Token
 }
 `
 
@@ -69,6 +88,9 @@ const resolvers = {
       allAuthors: async () => {
         return await Author.find({})
       },
+      me: async (root, args, context) => {
+        return context.currentUser
+      }
     },
    
     Mutation: {
@@ -98,7 +120,7 @@ const resolvers = {
         try{
            await author.save()
         } catch (error) {
-          throw new GraphQLError('saving born failed',{
+          throw new GraphQLError('saving born year failed',{
             extensions: {
               code: 'BAD_USER_INPUT',
               invalidArgs: args.name,
@@ -108,7 +130,42 @@ const resolvers = {
         }
         return author
         }
-      }
+      },
+      createUser: async (root, args) => {
+        const user = new User({ 
+          username: args.username,
+          favoriteGenre: args.favoriteGenre
+         })
+  
+        return user.save()
+          .catch(error => {
+            throw new GraphQLError('Creating new user was unsuccessful', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+                invalidArgs: args.name,
+                error
+              }
+            })
+          })
+      },
+      login: async (root, args) => {
+        const user = await User.findOne({ username: args.username })
+  
+        if( !user || args.password != 'numberone' ){
+          throw new GraphQLError('Wrong username or password', {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
+        }
+  
+        const userToken = {
+          username: user.username,
+          id: user._id
+        }
+  
+        return { value: jwt.sign(userToken, process.env.JWT_SECRET) }
+      },
     }
   }
   
