@@ -41,7 +41,7 @@ const Authors = ({show, allAuthors}) => {
             <th>books</th>
           </tr>
           {authors.map((a) => (
-            <tr key={a.name}>
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
@@ -60,7 +60,7 @@ const Authors = ({show, allAuthors}) => {
         </div>
         <div>
           born <input
-            type="number"
+            type="Number"
             value={born}
             onChange={({ target }) => setBorn(parseInt(target.value))}
           />
