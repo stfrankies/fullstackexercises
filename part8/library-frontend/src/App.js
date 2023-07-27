@@ -2,8 +2,9 @@ import { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommend from './components/Recommend'
 import { useApolloClient, useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS } from './gqlactions'
+import { ALL_AUTHORS, ALL_BOOKS, USER } from './gqlactions'
 import Login from './components/Login'
 
 
@@ -15,6 +16,7 @@ const App = () => {
 
   const query_authors = useQuery(ALL_AUTHORS)
   const query_books = useQuery(ALL_BOOKS)
+  const query_user = useQuery(USER)
 
   if(query_authors.loading || query_books.loading){
     return <div>spinner...</div>
@@ -26,6 +28,7 @@ const App = () => {
     client.resetStore()
   }
 
+  console.log(query_user)
   return (
     <div>
       <div>
@@ -38,6 +41,7 @@ const App = () => {
             <button onClick={logout}>logout</button></>
           )
         }
+        <button onClick={() => setPage('recommend')}>recommend</button>
       </div>
 
       <Authors allAuthors={query_authors.data.allAuthors} show={page === 'authors'} />
@@ -47,6 +51,8 @@ const App = () => {
       <NewBook show={page === 'add'} />
 
       <Login show={page === 'login'} setToken={setToken} />
+
+      {token ? (<Recommend show={page === 'recommend'} favoriteGenres={query_user.data.me.favoriteGenres} allBooks={query_books.data.allBooks}/>): null}
     </div>
   )
 }

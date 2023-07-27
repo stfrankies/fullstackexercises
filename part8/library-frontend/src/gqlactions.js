@@ -16,6 +16,7 @@ export const ALL_AUTHORS = gql
         id
         title,
         published,
+        genres
         author {
           name
           born
@@ -56,4 +57,13 @@ export const ALL_AUTHORS = gql
         value
       }
     }
+  `
+
+  export const USER = gql `
+  query Me {
+    me {
+      username
+      favoriteGenres
+    }
+  }
   `

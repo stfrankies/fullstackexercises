@@ -27,7 +27,7 @@ mongoose.connect(MONGODB_URI)
 const typeDefs = `
   type User {
     username: String!
-    favoriteGenre: String!
+    favoriteGenres: [String]
     id: ID!
   }
 
@@ -71,6 +71,7 @@ const typeDefs = `
 	): Author
   createUser(
     username: String!
+    favoriteGenres: [String]
   ): User
   login(
     username: String!
@@ -91,6 +92,7 @@ const resolvers = {
       return authors
     },
     me: async (root, args, context) => {
+      console.log(context)
       return context.currentUser
     }
   },
@@ -131,10 +133,9 @@ const resolvers = {
       }
 
       const findAuthor = await Author.findOne({name: args.author})
-
-      try{
-        const newbook = new Book({ ...args, author: findAuthor })
-        console.log(newbook)
+      const newbook = new Book({ ...args, author: findAuthor })
+      
+      try{ 
         await newbook.save()
       } catch (error) {
         throw new GraphQLError('saving book failed', {
@@ -167,14 +168,12 @@ const resolvers = {
       return author
       }
     },
-    createUser: async (root, args) => {
-      const user = new User({ 
-        username: args.username,
-        favoriteGenre: args.favoriteGenre
-        })
-
-      return user.save()
-        .catch(error => {
+    createUser: async (root, args) => {  
+      try{
+        const user = new User(args)
+        await user.save()
+        return user
+      } catch(error) {
           throw new GraphQLError('Creating new user was unsuccessful', {
             extensions: {
               code: 'BAD_USER_INPUT',
@@ -182,7 +181,7 @@ const resolvers = {
               error
             }
           })
-        })
+        }
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
