@@ -3,8 +3,12 @@ import { useState } from 'react'
 const Books = ({show, allBooks}) => {
 
   const [genre, setGenre] = useState('All genres')
-  const genres = ["Literature", "adventure", "Science", "All genres"]
 
+  const genresExtract = allBooks.map(b => Object.values(b.genres))
+  const genres = [...new Set(genresExtract.flat())]
+
+  genres.push("All genres")
+  
   if (!show) {
     return null
   }

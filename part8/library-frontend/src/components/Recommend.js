@@ -4,7 +4,7 @@ const Recommend = ({ show, favoriteGenres, allBooks }) => {
         return null
     }
 
-    const bookFilter = allBooks.filter(books => books.genres.includes(favoriteGenres[0]))
+    const bookFilter = allBooks.filter((books) => favoriteGenres.some((gen) => books.genres.includes(gen)))
 
     console.log(bookFilter)
     return (
