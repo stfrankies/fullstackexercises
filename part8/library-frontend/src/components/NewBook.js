@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../gqlactions'
+import { updateCache } from '../App'
+
 
 
 const NewBook = (props) => {
@@ -14,6 +16,9 @@ const NewBook = (props) => {
     refetchQueries: [{query: ALL_AUTHORS}, {query: ALL_BOOKS}],
     onError: (error)=>{
       console.log(error.graphQLErrors[0].message)
+    },
+    update: (cache, response) => {
+      updateCache(cache, {query: ALL_BOOKS}, response.data.addBook)
     }
   })
 

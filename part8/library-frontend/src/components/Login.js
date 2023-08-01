@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { USER_LOGIN } from "../gqlactions";
 
+
 const Login = ({setToken, show})=>{
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    
 
     const [login, result] = useMutation(USER_LOGIN, {
         onError: (error) => {
@@ -18,7 +20,7 @@ const Login = ({setToken, show})=>{
             setToken(jwt)
             localStorage.setItem('authToken', jwt)
         }
-    }, [result.data])
+    }, [result.data, setToken])
 
     if(!show){
         return null
@@ -27,14 +29,18 @@ const Login = ({setToken, show})=>{
         event.preventDefault()
 
         login({ variables: { username, password } })
-
-        setUsername('')
         setPassword('')
+    }
+
+    const logout = () => {
+        setToken(null)
+        localStorage.clear()
     }
 
     return(
         <div>
-            <form onSubmit={submit}>
+            {localStorage.getItem('authToken') ? (<><p>Welcome, {username}</p><button onClick={()=>logout()}>logout</button></>):
+            (<form onSubmit={submit}>
                 <div>
                     name
                     <input
@@ -50,7 +56,7 @@ const Login = ({setToken, show})=>{
                     />
                 </div>
                 <button type="submit">login</button>
-            </form>
+            </form>)}
         </div>
     )
 }

@@ -6,7 +6,6 @@ const Recommend = ({ show, favoriteGenres, allBooks }) => {
 
     const bookFilter = allBooks.filter((books) => favoriteGenres.some((gen) => books.genres.includes(gen)))
 
-    console.log(bookFilter)
     return (
         <div>
           <h2>Recommendations</h2>
@@ -26,7 +25,7 @@ const Recommend = ({ show, favoriteGenres, allBooks }) => {
                 </tr>
                ))}
             </tbody>
-      </table>
+          </table>
         </div> 
     )
 }

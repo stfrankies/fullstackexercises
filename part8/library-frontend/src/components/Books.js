@@ -15,8 +15,6 @@ const Books = ({show, allBooks}) => {
 
   const bookFilter = allBooks.filter(books => genre === 'All genres' ? books : books.genres.includes(genre))
 
-  console.log(bookFilter)
-
   return (
     <div>
       <h2>books</h2>
@@ -37,8 +35,8 @@ const Books = ({show, allBooks}) => {
         </tbody>
       </table>
       <>
-        {genres.map(gen=>(
-          <button onClick={() => setGenre(gen)} >{gen}</button>
+        {genres.map((gen, idx)=>(
+          <button onClick={() => setGenre(gen)} key={idx}>{gen}</button>
         ))}
       </>
     </div>
