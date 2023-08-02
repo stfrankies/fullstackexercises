@@ -1,3 +1,27 @@
+interface CalcValues {
+    target: number;
+    hours: Array<number>; 
+}
+
+const parseArgument = (args: string[]): CalcValues => {
+    if(args.length < 4)
+        throw new Error('Not enough arguments')
+
+    const hour: Array<number> = []
+
+    for(let i = 3; i < args.length; i++){
+        if(isNaN(Number(args[2])) && isNaN(Number(args[3]))){
+            throw new Error('provided value were not numbers')
+        }else{
+            hour.push(Number(args[i])) 
+        }
+    }
+
+    return {
+        target: Number(args[2]),
+        hours: hour
+    }
+}
 
 interface Result {
     periodLength: number,
@@ -11,11 +35,16 @@ interface Result {
 
 
 const calculateExercises = (hours: number[], target:number): Result => {
+    
+    let sumhours= 0
     const periodLength = hours.length
-
     const trainingDays = hours.filter(h => h !== 0).length;
 
-    const average = (hours.reduce((a, b) => a + b, 0))/(hours.length);
+    for(var h in hours){
+        sumhours+=hours[h]
+    }
+
+    const average = sumhours/(hours.length)
 
     const success = average >= target
 
@@ -23,7 +52,7 @@ const calculateExercises = (hours: number[], target:number): Result => {
         const myRating = average/target
         if(myRating >= 1){
             return 3;
-        }else if(myRating >= 0.9){
+        }else if(myRating >= 0.8){
             return 2;
         }else{
             return 1;
@@ -56,4 +85,13 @@ const calculateExercises = (hours: number[], target:number): Result => {
     } 
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try{
+    const { target, hours } = parseArgument(process.argv)
+    console.log(calculateExercises(hours, target))
+}catch(error: unknown){
+    let errorMessage = 'Something bad happend.'
+    if(error instanceof Error){
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage)
+}
