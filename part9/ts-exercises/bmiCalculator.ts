@@ -19,7 +19,7 @@ interface BmiValues {
   }
   
 
-const calculateBmi = (height: number, weight: number) =>{
+export const calculateBmi = (height: number, weight: number) =>{
 
     const bmi = weight / ((height / 100) * (height / 100))
 
