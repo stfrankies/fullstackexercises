@@ -12,16 +12,16 @@ interface BmiValues {
       return {
         value1: Number(args[2]),
         value2: Number(args[3])
-      }
+      };
     } else {
       throw new Error('Provided values were not numbers!');
     }
-  }
+  };
   
 
 export const calculateBmi = (height: number, weight: number) =>{
 
-    const bmi = weight / ((height / 100) * (height / 100))
+    const bmi = weight / ((height / 100) * (height / 100));
 
     if ( bmi < 18.5 ){
         return "Underweight";
@@ -32,13 +32,13 @@ export const calculateBmi = (height: number, weight: number) =>{
     }else{
         return "Obese";
     }
-}
+};
 
 try {
     const { value1, value2 } = parseArguments(process.argv);
-    console.log(calculateBmi(value1, value2))
+    console.log(calculateBmi(value1, value2));
   } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
+    let errorMessage = 'Something bad happened.';
     if (error instanceof Error) {
       errorMessage += ' Error: ' + error.message;
     }
