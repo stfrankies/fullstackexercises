@@ -1,3 +1,4 @@
+
 interface CalcValues {
     target: number;
     hours: Array<number>; 
@@ -34,17 +35,15 @@ interface Result {
 }
 
 
-const calculateExercises = (hours: number[], target:number): Result => {
+export const calculateExercises = (hours: number[], target:number): Result => {
     
     let sumhours= 0;
     const periodLength = hours.length;
     const trainingDays = hours.filter(h => h !== 0).length;
 
-    for(const h of hours){
-        sumhours+=h;
-    }
+    for(const h of hours) sumhours+=h;
 
-    const average = sumhours/(hours.length);
+    const average = sumhours/periodLength;
 
     const success = average >= target;
 
