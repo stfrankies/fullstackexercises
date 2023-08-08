@@ -1,7 +1,7 @@
 import express = require('express');
 var cors = require('cors');
-import routeDiagnoses from '../routes/diagnoses';
-import routePatients from '../routes/patients';
+import routeDiagnoses from './routes/diagnoses';
+import routePatients from './routes/patients';
 
 const app = express();
 app.use(express.json());
