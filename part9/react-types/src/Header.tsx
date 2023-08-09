@@ -4,7 +4,7 @@ interface HeaderProps {
 }
 
 const Header = (props : HeaderProps) => {
-  return <h1>Hello, {props.heading}</h1>;
+  return <>Hello, {props.heading}</>;
 };
 
 
