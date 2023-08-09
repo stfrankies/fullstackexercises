@@ -1,7 +1,8 @@
 import { Diagnoses, Gender, Patient } from "../types";
+import theNewPatient from "../utils";
 
 
-export const diagnoses: Diagnoses[] = [
+const allDiagnoses: Diagnoses[] = [
     {
       "code": "M24.2",
       "name": "Disorder of ligament",
@@ -81,7 +82,7 @@ export const diagnoses: Diagnoses[] = [
     }
   ];
   
-  export const patients: Patient[] = [
+  const patients: Patient[] = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -128,3 +129,11 @@ export const diagnoses: Diagnoses[] = [
         "occupation": "Digital evangelist"
     }
 ];
+
+const allPatients: Patient[] = patients.map(obj => {
+  const object = theNewPatient(obj) as Patient;
+  object.id = obj.id;
+  return object;
+});
+
+export default {allPatients, allDiagnoses};

@@ -1,17 +1,16 @@
 import express from "express";
-import { patients } from '../db/data';
+import Data from '../db/data';
 import  services  from '../db/services'
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    res.send(patients);
+    res.send(Data.allPatients);
 });
 
 router.get('/:id', (req, res) => {
     res.send(services.getPatientById(req.params.id));
 });
-
 
 router.post('/', (req, res) => {
     try{

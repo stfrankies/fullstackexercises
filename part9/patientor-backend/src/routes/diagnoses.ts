@@ -1,10 +1,10 @@
 import express from "express";
-import { diagnoses } from '../db/data';
+import Data from '../db/data';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    res.send(diagnoses);
+    res.send(Data.allDiagnoses);
 });
 
 export default router;

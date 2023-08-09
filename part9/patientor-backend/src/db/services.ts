@@ -1,18 +1,18 @@
-import {diagnoses, patients} from './data';
+import Data from './data';
 import { Diagnoses, NoSsnPatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
 
 
 const getDiagnoses = (): Diagnoses[] => {
-    return diagnoses;
+    return Data.allDiagnoses;
 };
 
 const getPatients = (): NoSsnPatient[] =>{
-    return patients
+    return Data.allPatients
 };
 
 const getPatientById = (id: string): Patient | undefined => {
-    return patients.find(p => p.id === id);
+    return Data.allPatients.find(p => p.id === id);
 };
 
 const addPatient = ({name, dateOfBirth, gender, occupation, entries}: NoSsnPatient ) => {
@@ -24,7 +24,7 @@ const addPatient = ({name, dateOfBirth, gender, occupation, entries}: NoSsnPatie
         occupation,
         entries
    }
-   patients.push(newPatient);
+   Data.allPatients.push(newPatient);
    return newPatient
 };
 
