@@ -1,4 +1,4 @@
-import { Diagnoses, Patient } from "../types";
+import { Diagnoses, Gender, Patient } from "../types";
 
 
 export const diagnoses: Diagnoses[] = [
@@ -87,7 +87,8 @@ export const diagnoses: Diagnoses[] = [
         "name": "John McClane",
         "dateOfBirth": "1986-07-09",
         "ssn": "090786-122X",
-        "gender": "male",
+        "gender": Gender.Male,
+        "entries": [ ],
         "occupation": "New york city cop"
     },
     {
@@ -95,7 +96,8 @@ export const diagnoses: Diagnoses[] = [
         "name": "Martin Riggs",
         "dateOfBirth": "1979-01-30",
         "ssn": "300179-77A",
-        "gender": "male",
+        "gender": Gender.Male,
+        "entries": [ ],
         "occupation": "Cop"
     },
     {
@@ -103,7 +105,8 @@ export const diagnoses: Diagnoses[] = [
         "name": "Hans Gruber",
         "dateOfBirth": "1970-04-25",
         "ssn": "250470-555L",
-        "gender": "other",
+        "gender": Gender.Other,
+        "entries": [ ],
         "occupation": "Technician"
     },
     {
@@ -111,7 +114,8 @@ export const diagnoses: Diagnoses[] = [
         "name": "Dana Scully",
         "dateOfBirth": "1974-01-05",
         "ssn": "050174-432N",
-        "gender": "female",
+        "gender": Gender.Female,
+        "entries": [ ],
         "occupation": "Forensic Pathologist"
     },
     {
@@ -119,7 +123,8 @@ export const diagnoses: Diagnoses[] = [
         "name": "Matti Luukkainen",
         "dateOfBirth": "1971-04-09",
         "ssn": "090471-8890",
-        "gender": "male",
+        "gender": Gender.Male,
+        "entries": [ ],
         "occupation": "Digital evangelist"
     }
 ];

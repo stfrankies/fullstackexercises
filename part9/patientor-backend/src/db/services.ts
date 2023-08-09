@@ -1,5 +1,5 @@
 import {diagnoses, patients} from './data';
-import { Diagnoses, Patient } from '../types';
+import { Diagnoses, NoSsnPatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
 
 
@@ -7,18 +7,22 @@ const getDiagnoses = (): Diagnoses[] => {
     return diagnoses;
 };
 
-const getPatients = (): Patient[] =>{
+const getPatients = (): NoSsnPatient[] =>{
     return patients
 };
 
-const addPatient = ({name, dateOfBirth, gender, occupation}:Omit<Patient, 'ssn'>  ) => {
-   const newPatient: Patient = {
+const getPatientById = (id: string): Patient | undefined => {
+    return patients.find(p => p.id === id);
+};
+
+const addPatient = ({name, dateOfBirth, gender, occupation, entries}: NoSsnPatient ) => {
+   const newPatient: NoSsnPatient = {
         id: uuid(),
         name,
         dateOfBirth,
         gender,
         occupation,
-        ssn: ''
+        entries
    }
    patients.push(newPatient);
    return newPatient
@@ -27,5 +31,6 @@ const addPatient = ({name, dateOfBirth, gender, occupation}:Omit<Patient, 'ssn'>
 export default {
     getDiagnoses,
     getPatients,
-    addPatient
+    addPatient,
+    getPatientById
 };
