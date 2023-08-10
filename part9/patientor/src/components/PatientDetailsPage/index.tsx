@@ -1,7 +1,7 @@
 import { Patient, Gender, Diagnosis } from "../../types";
-import FemaleIcon from '@mui/icons-material/Female';
-import MaleIcon from '@mui/icons-material/Male';
-import { Typography} from "@mui/material";
+import { Female, Male } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import EntryDetails from "./EntryDetails";
 
 
 interface Props {
@@ -9,22 +9,23 @@ interface Props {
     diagnosis: Diagnosis[]
 }
 
-const genderPick = (gender: Gender | undefined ) => {
-    switch(gender){
-        case "female":
-            return <FemaleIcon />;
-        case "male":
-            return <MaleIcon/>;
-        default:
-            return null;
-    }
-}
-
 const PatientDetailsPage = ({ patient, diagnosis }: Props) => {
 
-    if(patient === undefined) return(<p>Loading results...</p>)
+    if(patient === undefined || diagnosis === undefined) return(<p>Loading results...</p>)
+
     //console.log(patient)
     //console.log(diagnosis)
+
+    const genderPick = (gender: Gender | undefined ) => {
+        switch(gender){
+            case "female":
+                return <Female />;
+            case "male":
+                return <Male/>;
+            default:
+                return null;
+        }
+    }
     
     return(
         <div>
@@ -32,9 +33,7 @@ const PatientDetailsPage = ({ patient, diagnosis }: Props) => {
             <p>ssn: {patient?.ssn}</p>
             <p>occupation: {patient?.occupation}</p>
             <h3>entries: </h3>
-            {patient?.entries.map(entry => <span key={entry.id}>{entry.date} {entry.description}
-                <ul>{entry.diagnosisCodes?.map((d, i) => <li key={i}>{d} {diagnosis.find(n => n.code === d)?.name}</li>)}</ul>
-            </span>)}
+            {patient?.entries.map(entry => <EntryDetails entry={entry} diagnosis={diagnosis} key={entry.id}/>)}
         </div>
     )
 }

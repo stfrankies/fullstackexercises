@@ -25,12 +25,10 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
-  entries: Array<BaseEntry>;
+  entries: Array<Entry>;
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
-
-
 
 export enum HealthCheckRating {
   "Healthy" = 0,
