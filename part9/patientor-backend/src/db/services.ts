@@ -1,5 +1,5 @@
 import Data from './data';
-import { Diagnoses, NoSsnPatient, Patient } from '../types';
+import { Diagnoses, NoSsnPatient, Patient, Entry, EntryWithoutId } from '../types';
 import { v1 as uuid } from 'uuid';
 
 
@@ -28,9 +28,22 @@ const addPatient = ({name, dateOfBirth, gender, occupation, entries}: NoSsnPatie
    return newPatient
 };
 
+const addEntry = ( patient: Patient, entry: EntryWithoutId ): Entry => {
+    const id = uuid();
+    const newEntry = {
+        id,
+        ...entry
+    };
+
+    patient.entries.push(newEntry);
+    return newEntry;
+};
+
+
 export default {
     getDiagnoses,
     getPatients,
     addPatient,
-    getPatientById
+    getPatientById,
+    addEntry
 };

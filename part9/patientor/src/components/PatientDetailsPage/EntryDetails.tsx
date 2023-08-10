@@ -63,7 +63,8 @@ const EntryType = ({ entry } : {entry: Entry}) =>{
 const EntryDetails = (props: Props) => {    
 
     return(
-        <Box sx={{ border: '1px solid grey', borderRadius: 4, padding: 2, margin: 1  }} >
+    
+    <Box sx={{ border: '1px solid grey', borderRadius: 4, padding: 2, margin: 1  }} >
         <p>{props.entry.date}</p>
         {props.entry.type === "OccupationalHealthcare" ?
             props.entry.employerName ? 
@@ -85,7 +86,7 @@ const EntryDetails = (props: Props) => {
          </ul>
 
          <EntryType entry={props.entry}/><p>diagnosed by {props.entry.specialist}</p>
-      </Box> 
+      </Box>
     )
 }
 

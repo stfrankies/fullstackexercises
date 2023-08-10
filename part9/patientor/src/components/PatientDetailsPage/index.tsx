@@ -1,6 +1,7 @@
+import React from 'react'
 import { Patient, Gender, Diagnosis } from "../../types";
 import { Female, Male } from "@mui/icons-material";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import EntryDetails from "./EntryDetails";
 
 
@@ -9,7 +10,7 @@ interface Props {
     diagnosis: Diagnosis[]
 }
 
-const PatientDetailsPage = ({ patient, diagnosis }: Props) => {
+const PatientDetailsPage  = ({ patient, diagnosis }: Props) : JSX.Element => {
 
     if(patient === undefined || diagnosis === undefined) return(<p>Loading results...</p>)
 
@@ -32,6 +33,16 @@ const PatientDetailsPage = ({ patient, diagnosis }: Props) => {
             <Typography component="h5" variant="h5">{patient?.name}{genderPick(patient?.gender)}</Typography>
             <p>ssn: {patient?.ssn}</p>
             <p>occupation: {patient?.occupation}</p>
+
+            <AddEntryModel
+            onSubmit={submitNewEntry}
+            error={error}
+            onClose={closeModal}
+            modalOpen={modalOpen}
+        />
+       <Button variant="contained" onClick={() => openModal()}>
+         Add New Entry
+       </Button>
             <h3>entries: </h3>
             {patient?.entries.map(entry => <EntryDetails entry={entry} diagnosis={diagnosis} key={entry.id}/>)}
         </div>
