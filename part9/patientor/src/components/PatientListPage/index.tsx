@@ -7,7 +7,7 @@ import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
 
-import patientService from "../../services/patients";
+import Services from "../../services/patients";
 
 interface Props {
   patients : Patient[]
@@ -28,7 +28,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
-      const patient = await patientService.create(values);
+      const patient = await Services.createPatient(values);
       setPatients(patients.concat(patient));
       setModalOpen(false);
     } catch (e: unknown) {
