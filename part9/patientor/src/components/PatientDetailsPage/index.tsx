@@ -6,7 +6,7 @@ import { Typography} from "@mui/material";
 
 interface Props {
     patient : Patient | null | undefined
-  }
+}
 
 const genderPick = (gender: Gender | undefined ) => {
     switch(gender){
