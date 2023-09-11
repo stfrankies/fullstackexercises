@@ -8,7 +8,7 @@ import { Diagnosis, Patient } from "./types";
 import Services from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 import PatientDetailsPage from "./components/PatientDetailsPage";
-
+import DiagnosesContext  from "./contexts/diagnosisContext";
 
 const App = () => {
   
@@ -43,10 +43,12 @@ const App = () => {
             Home
           </Button>
           <Divider hidden />
-          <Routes>
-            <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-            <Route path="/patients/:id" element={<PatientDetailsPage patient={patient} diagnosis={diagnoses} />} />
-          </Routes>
+          <DiagnosesContext.Provider value={diagnoses}>
+            <Routes>
+              <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
+              <Route path="/patients/:id" element={<PatientDetailsPage patient={patient} diagnosis={diagnoses} />} />
+            </Routes>
+          </DiagnosesContext.Provider>
         </Container>
     </div>
   );
